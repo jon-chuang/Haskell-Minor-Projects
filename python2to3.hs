@@ -1,7 +1,9 @@
 {-
-This program adds brackets around the expression following\
-\ any occurance of the python keyword 'print ' that follows\
-\ a new line and whitespace.\nDefault output location is directory of this program."
+This program adds brackets around the expression following
+any occurance of the python keyword 'print ' that follows
+a new line and whitespace. 
+
+Default output location is directory of this program.
 -}
 module Python2to3 where
 
@@ -20,6 +22,7 @@ processData line = let printpart = (line =~ print' :: String) in
                         if ((line =~ print' :: Bool) && not (line =~ print'' :: Bool) )
                             then printpart ++ "(" ++ drop (length printpart) line ++ ")"
                             else line
+                            
 outputData :: String -> IO ()
 outputData processed = writeFile "output.py" processed
 
