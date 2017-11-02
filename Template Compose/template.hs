@@ -1,5 +1,9 @@
 {-# LANGUAGE TemplateHaskell #-}
-module Template where
+module Template
+  ( composeN
+  , composeMap'
+  , composeMap
+  ) where
 
 import Language.Haskell.TH
 
@@ -14,7 +18,9 @@ composeN n
     funcs = replicate n (varE func)
     composedF = composeAll funcs
     cl = clause [(varP func)] (normalB composedF) []
-  
+
+-- Declares the functions map1 to mapN, which have to be placed in a seperate 
+-- module to where they are called.
 composeMap' :: Int -> Q Dec
 composeMap' n
   | n >= 1    = funD name [cl]
@@ -26,6 +32,7 @@ composeMap' n
     composedF = composeAll funcs
     cl = clause [] (normalB composedF) []
 
+-- Inlines the function where the TH $ notation is used.
 composeMap :: Int -> Q Exp
 composeMap n = do
   f <- newName "f"
